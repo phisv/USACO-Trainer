@@ -42,6 +42,21 @@ void reflect()
 		}
 	}
 }
+void rotate()
+{
+	int N = cp.length();
+	for(int k = N-1; k >= 0; k--)
+	{
+		for(int i = 0; i <= k; i++)
+		{
+			int temp = cp[i][0]; //change 0 to stuff based on which ring level
+			cp[i][0] = cp[0][N-i-1];
+			cp[0][N-i-1] = cp[N-i-1][N-1];
+ 		 	cp[N-i-1][N-1] = cp[N-1][i];
+ 			cp[N-1][i] = temp;
+		}
+	}
+}
 
 bool comp()
 {
