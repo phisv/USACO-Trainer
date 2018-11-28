@@ -1,4 +1,8 @@
-#include <cstdio>
+/*
+ID: bxu5111
+LANG: C++
+TASK: transform
+*/#include <cstdio>
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -45,13 +49,13 @@ void reflect()
 void rotate()
 {
 	int N = cp.length();
-	for(int k = N-1; k >= 0; k--)
+	for(int k = N; k > 0; k--)  //ring size
 	{
-		for(int i = 0; i <= k; i++)
+		for(int i = 0; i < k-1; i++)
 		{
-			int temp = cp[i][0]; //change 0 to stuff based on which ring level
-			cp[i][0] = cp[0][N-i-1];
-			cp[0][N-i-1] = cp[N-i-1][N-1];
+			int temp = cp[i][N-k]; //0 is N-k
+			cp[i][N-k] = cp[N-k][N-i-1];
+			cp[N-k][N-i-1] = cp[N-i-1][N-1];
  		 	cp[N-i-1][N-1] = cp[N-1][i];
  			cp[N-1][i] = temp;
 		}
@@ -67,6 +71,34 @@ bool comp()
 				return false;
 	}
 	return true;
+}
+int check()
+{
+	if(comp()) //no change needed
+		return 6;
+	rotate(); //rotated once 90
+	if(comp())
+		return 1;
+	rotate(); //rotated total 180
+	if(comp())
+		return 2;
+	rotate(); //rotated total 270
+	if(comp())
+		return 3;
+	rotate(); //back to orig
+	reflect(); //horizontal reflection
+	if(comp())
+		return 4;
+	rotate(); //rotated once 90 combo with reflect
+	if(comp())
+		return 5;
+	rotate(); //rotated total 180 combo with reflect
+	if(comp())
+		return 5;
+	rotate(); //rotated total 270 combo with reflect
+	if(comp())
+		return 5;
+	return 7; //invalid
 }
 
 int main(void)
@@ -95,10 +127,8 @@ int main(void)
 			nw[i][j] = c;
 		}
 	}
-
-
 	memcpy(mat,cp,sizeof(mat));
-
+	cout << check() << endl;
 
 	return 0;
 }
